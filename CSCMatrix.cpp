@@ -98,6 +98,11 @@
 
 	 int CSCMatrix::getIntFromCSCMatrix(int row, int column) { // фн-ция для возврата int значения из CSC матрицы по номеру ряда row и колонны column
 		int answer = 0;
+		if (column > row) {
+			int temp = row;
+			row = column;
+			column = temp;
+		}
 		int number_of_not_null_elem_befor_curr_column = 0;
 		if (column != 0) number_of_not_null_elem_befor_curr_column = _csc_matrix.commul_not_null_in_column[column - 1];
 		int number_of_not_null_elem_in_curr_column = _csc_matrix.commul_not_null_in_column[column] - // вычисляем количество элементов до текущего номера колонны
@@ -121,8 +126,12 @@
 			int random_column = random(generator, 0, _csc_matrix._size - 1); // генерируем случайный номер колонны
 			int random_value = random(generator, min_random_value, max_random_value); // генерируем случайное значение для вставки
 			if (random_row == random_column) continue; // если попали на главную диагональ - идем на новый круг
-			if (addNumberToMatrix(random_value, random_row, random_column)) amount_of_additional_elements--; // вставляем значения в матрицу
-			if (addNumberToMatrix(random_value, random_column, random_row)) amount_of_additional_elements--;
+			if (random_column > random_row) {
+				int temp = random_column;
+				random_column = random_row;
+				random_row = temp;
+			}
+			if (addNumberToMatrix(random_value, random_row, random_column)) amount_of_additional_elements -= 2; // вставляем значения в матрицу
 		}
 	 }
 
